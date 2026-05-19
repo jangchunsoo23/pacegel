@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaceGel — 페이스젤</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #0D0D0D;
+  --white: #F5F3EE;
+  --orange: #E8440A;
+  --orange-light: #FF6B35;
+  --gray: #888;
+  --gray-light: #F0EDE8;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 400;
+  overflow-x: hidden;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 40px;
+  background: rgba(13,13,13,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 0.5px solid rgba(255,255,255,0.08);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px;
+  letter-spacing: 0.1em;
+  color: var(--orange);
+}
+.nav-cta {
+  background: var(--orange);
+  color: var(--white);
+  border: none;
+  padding: 10px 22px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 0.2s;
+  text-decoration: none;
+}
+.nav-cta:hover { background: var(--orange-light); }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 120px 40px 80px;
+  gap: 60px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -200px; right: -200px;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(232,68,10,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-tag {
+  display: inline-block;
+  border: 0.5px solid var(--orange);
+  color: var(--orange);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  padding: 5px 12px;
+  border-radius: 2px;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+}
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(52px, 7vw, 88px);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  margin-bottom: 28px;
+}
+.hero-title span { color: var(--orange); }
+.hero-desc {
+  font-size: 15px;
+  line-height: 1.8;
+  color: rgba(245,243,238,0.65);
+  max-width: 420px;
+  margin-bottom: 40px;
+}
+.hero-actions { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+.btn-primary {
+  background: var(--orange);
+  color: var(--white);
+  border: none;
+  padding: 16px 36px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 0.2s, transform 0.15s;
+  text-decoration: none;
+  display: inline-block;
+  letter-spacing: 0.02em;
+}
+.btn-primary:hover { background: var(--orange-light); transform: translateY(-1px); }
+.btn-secondary {
+  color: rgba(245,243,238,0.6);
+  font-size: 13px;
+  text-decoration: underline;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+.hero-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gel-card {
+  background: #1A1A1A;
+  border: 0.5px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 40px 36px;
+  width: 100%;
+  max-width: 340px;
+  position: relative;
+}
+.gel-card::before {
+  content: '';
+  position: absolute; top: -1px; left: 20%; right: 20%; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--orange), transparent);
+  border-radius: 2px;
+}
+.gel-emoji { font-size: 56px; margin-bottom: 20px; display: block; }
+.gel-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+.gel-sub { font-size: 12px; color: var(--gray); margin-bottom: 24px; }
+.gel-specs { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+.spec-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0;
+  border-bottom: 0.5px solid rgba(255,255,255,0.06);
+  font-size: 13px;
+}
+.spec-label { color: rgba(245,243,238,0.5); }
+.spec-val { font-weight: 500; }
+.spec-val.highlight { color: var(--orange); }
+.gel-price {
+  display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;
+}
+.price-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  letter-spacing: 0.03em;
+  color: var(--white);
+}
+.price-unit { font-size: 13px; color: var(--gray); }
+.price-sub { font-size: 11px; color: var(--gray); margin-bottom: 20px; }
+
+/* STATS */
+.stats {
+  padding: 60px 40px;
+  border-top: 0.5px solid rgba(255,255,255,0.08);
+  border-bottom: 0.5px solid rgba(255,255,255,0.08);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+.stat-item {
+  padding: 24px 32px;
+  border-right: 0.5px solid rgba(255,255,255,0.08);
+}
+.stat-item:last-child { border-right: none; }
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 44px;
+  letter-spacing: 0.02em;
+  color: var(--orange);
+  display: block;
+  margin-bottom: 4px;
+}
+.stat-label { font-size: 12px; color: rgba(245,243,238,0.5); line-height: 1.5; }
+
+/* SECTION COMMON */
+section { padding: 100px 40px; }
+.section-tag {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 16px;
+  display: block;
+}
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(36px, 5vw, 56px);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  margin-bottom: 16px;
+}
+.section-desc {
+  font-size: 15px;
+  color: rgba(245,243,238,0.55);
+  line-height: 1.8;
+  max-width: 520px;
+  margin-bottom: 60px;
+}
+
+/* WHY */
+.why { background: #111; }
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(255,255,255,0.08);
+  border: 0.5px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.why-item {
+  background: #111;
+  padding: 36px 32px;
+  transition: background 0.2s;
+}
+.why-item:hover { background: #161616; }
+.why-icon { font-size: 28px; margin-bottom: 18px; display: block; }
+.why-title { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+.why-desc { font-size: 13px; color: rgba(245,243,238,0.5); line-height: 1.7; }
+
+/* HOW TO USE */
+.how { background: var(--black); }
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  position: relative;
+}
+.steps::after {
+  content: '';
+  position: absolute;
+  top: 28px; left: 12%;  right: 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(232,68,10,0.4), rgba(232,68,10,0.4), transparent);
+  z-index: 0;
+}
+.step-item { text-align: center; padding: 0 20px; position: relative; z-index: 1; }
+.step-num {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--black);
+  border: 1.5px solid var(--orange);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  color: var(--orange);
+  margin: 0 auto 20px;
+}
+.step-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+.step-desc { font-size: 12px; color: rgba(245,243,238,0.5); line-height: 1.6; }
+
+/* INGREDIENTS */
+.ingredients { background: #111; }
+.ing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+.ing-list { display: flex; flex-direction: column; gap: 0; }
+.ing-item {
+  display: flex; align-items: center; gap: 20px;
+  padding: 20px 0;
+  border-bottom: 0.5px solid rgba(255,255,255,0.07);
+}
+.ing-bar-wrap {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.ing-bar {
+  height: 100%;
+  background: var(--orange);
+  border-radius: 2px;
+  transition: width 1s ease;
+}
+.ing-name { font-size: 13px; font-weight: 500; min-width: 90px; }
+.ing-amount { font-size: 12px; color: var(--orange); font-weight: 700; min-width: 60px; text-align: right; }
+.ing-note-box {
+  background: #1A1A1A;
+  border: 0.5px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 32px;
+}
+.ing-note-title { font-size: 14px; font-weight: 700; margin-bottom: 16px; color: var(--orange); }
+.ing-note-item {
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: 13px; color: rgba(245,243,238,0.6);
+  line-height: 1.6; margin-bottom: 12px;
+}
+.ing-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--orange); margin-top: 7px; flex-shrink: 0; }
+
+/* CTA SECTION */
+.cta-section {
+  background: var(--orange);
+  text-align: center;
+  padding: 100px 40px;
+}
+.cta-section .section-title { color: var(--black); }
+.cta-section .section-desc { color: rgba(0,0,0,0.6); margin: 0 auto 40px; }
+.btn-dark {
+  background: var(--black);
+  color: var(--white);
+  border: none;
+  padding: 18px 48px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: opacity 0.2s, transform 0.15s;
+  display: inline-block;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+.btn-dark:hover { opacity: 0.85; transform: translateY(-1px); }
+
+/* MODAL */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(4px);
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: #1A1A1A;
+  border: 0.5px solid rgba(255,255,255,0.12);
+  border-radius: 16px;
+  padding: 40px;
+  width: 90%;
+  max-width: 420px;
+  position: relative;
+}
+.modal-close {
+  position: absolute; top: 16px; right: 20px;
+  background: none; border: none; color: var(--gray);
+  font-size: 22px; cursor: pointer; line-height: 1;
+}
+.modal-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px;
+  letter-spacing: 0.03em;
+  margin-bottom: 8px;
+  color: var(--orange);
+}
+.modal-sub { font-size: 13px; color: var(--gray); margin-bottom: 28px; line-height: 1.6; }
+.modal-form { display: flex; flex-direction: column; gap: 12px; }
+.modal-input {
+  background: #111;
+  border: 0.5px solid rgba(255,255,255,0.15);
+  border-radius: 4px;
+  padding: 13px 16px;
+  font-size: 14px;
+  color: var(--white);
+  font-family: 'Noto Sans KR', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.modal-input:focus { border-color: var(--orange); }
+.modal-input::placeholder { color: rgba(255,255,255,0.25); }
+.modal-submit {
+  background: var(--orange);
+  color: var(--white);
+  border: none;
+  padding: 15px;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Noto Sans KR', sans-serif;
+  transition: background 0.2s;
+  margin-top: 4px;
+}
+.modal-submit:hover { background: var(--orange-light); }
+.modal-note { font-size: 11px; color: rgba(255,255,255,0.25); text-align: center; margin-top: 8px; }
+
+/* FOOTER */
+footer {
+  padding: 40px;
+  border-top: 0.5px solid rgba(255,255,255,0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.footer-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 0.1em;
+  color: var(--orange);
+}
+.footer-note { font-size: 11px; color: rgba(255,255,255,0.2); }
+
+/* MOBILE */
+@media (max-width: 768px) {
+  nav { padding: 16px 20px; }
+  .hero { grid-template-columns: 1fr; padding: 100px 20px 60px; gap: 40px; }
+  .hero-visual { order: -1; }
+  .gel-card { max-width: 100%; }
+  .stats { grid-template-columns: 1fr 1fr; }
+  .stat-item { border-right: none; border-bottom: 0.5px solid rgba(255,255,255,0.08); }
+  .stat-item:nth-child(odd) { border-right: 0.5px solid rgba(255,255,255,0.08); }
+  section { padding: 60px 20px; }
+  .why-grid { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .steps::after { display: none; }
+  .ing-grid { grid-template-columns: 1fr; }
+  .cta-section { padding: 60px 20px; }
+  footer { padding: 28px 20px; flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">PACEGEL</div>
+  <a class="nav-cta" href="#" onclick="openModal(); return false;">지금 구매하기</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <span class="hero-tag">🇰🇷 국내 러너를 위한 에너지젤</span>
+    <h1 class="hero-title">
+      처음 완주하는<br>
+      그날을 위해,<br>
+      <span>페이스젤</span>
+    </h1>
+    <p class="hero-desc">
+      입문자부터 풀마라토너까지. 소화 부담 없는 젤 타입과 최적의 카페인 함량으로 당신의 페이스를 끝까지 지켜드립니다.
+    </p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="#" onclick="openModal(); return false;">지금 바로 시작하기 →</a>
+      <button class="btn-secondary" onclick="document.getElementById('why').scrollIntoView({behavior:'smooth'})">왜 페이스젤인가요?</button>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="gel-card">
+      <span class="gel-emoji">⚡</span>
+      <div class="gel-name">PACEGEL CAFFEINE</div>
+      <div class="gel-sub">카페인 에너지젤 5개입 묶음</div>
+      <div class="gel-specs">
+        <div class="spec-row">
+          <span class="spec-label">카페인</span>
+          <span class="spec-val highlight">50mg</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">탄수화물</span>
+          <span class="spec-val">25g</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">전해질</span>
+          <span class="spec-val">나트륨 · 칼륨</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">용량</span>
+          <span class="spec-val">40ml / 개</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">원산지</span>
+          <span class="spec-val">국내산</span>
+        </div>
+      </div>
+      <div class="gel-price">
+        <span class="price-num">18,900</span>
+        <span class="price-unit">원</span>
+      </div>
+      <div class="price-sub">5개입 묶음 · 개당 3,780원 · 무료배송</div>
+      <a class="btn-primary" style="width:100%;text-align:center;" href="#" onclick="openModal(); return false;">구매하기</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat-item">
+    <span class="stat-num">50mg</span>
+    <span class="stat-label">최적의 카페인 함량<br>피로 억제 & 집중력 유지</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">25g</span>
+    <span class="stat-label">빠른 흡수 탄수화물<br>즉각적인 에너지 공급</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">40ml</span>
+    <span class="stat-label">한 입에 섭취 가능<br>레이스 중 간편 보충</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">5팩</span>
+    <span class="stat-label">하프 ~ 풀마라톤 1회분<br>5개입 묶음 구성</span>
+  </div>
+</div>
+
+<!-- WHY -->
+<section class="why" id="why">
+  <span class="section-tag">Why PaceGel</span>
+  <h2 class="section-title">페이스젤을<br>선택하는 이유</h2>
+  <p class="section-desc">해외 브랜드의 높은 가격, 낯선 성분 구성. 이제 국내 러너에 맞게 설계된 에너지젤을 경험해보세요.</p>
+  <div class="why-grid">
+    <div class="why-item">
+      <span class="why-icon">🏃</span>
+      <div class="why-title">입문자도 바로 쓸 수 있어요</div>
+      <p class="why-desc">복잡한 섭취 가이드 없이도 OK. 언제, 얼마나 먹어야 하는지 패키지에 모두 담았습니다.</p>
+    </div>
+    <div class="why-item">
+      <span class="why-icon">💊</span>
+      <div class="why-title">소화 부담을 줄인 젤 타입</div>
+      <p class="why-desc">레이스 중 위장 트러블은 가장 흔한 실패 원인. 빠른 흡수와 낮은 삼투압으로 부담을 최소화했습니다.</p>
+    </div>
+    <div class="why-item">
+      <span class="why-icon">💰</span>
+      <div class="why-title">해외 브랜드 대비 합리적인 가격</div>
+      <p class="why-desc">GU, Maurten 대비 30~40% 저렴. 훈련부터 대회까지 부담 없이 쓸 수 있는 가격대를 맞췄습니다.</p>
+    </div>
+    <div class="why-item">
+      <span class="why-icon">🇰🇷</span>
+      <div class="why-title">국내 생산, 믿을 수 있는 원료</div>
+      <p class="why-desc">HACCP 인증 국내 공장에서 생산. 성분표에 모르는 물질이 없도록 원료를 최소화했습니다.</p>
+    </div>
+    <div class="why-item">
+      <span class="why-icon">⚡</span>
+      <div class="why-title">카페인 50mg, 딱 맞는 함량</div>
+      <p class="why-desc">너무 많으면 심박수 이상, 너무 적으면 효과 없음. 운동 과학 기반으로 설계한 50mg을 맞췄습니다.</p>
+    </div>
+    <div class="why-item">
+      <span class="why-icon">🎯</span>
+      <div class="why-title">5km ~ 풀마라톤 모두 커버</div>
+      <p class="why-desc">첫 10km 대회부터 풀마라톤까지. 거리별 섭취 타이밍 가이드를 함께 제공합니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW TO USE -->
+<section class="how">
+  <span class="section-tag">How to Use</span>
+  <h2 class="section-title">섭취 방법</h2>
+  <p class="section-desc">처음이라도 걱정 마세요. 4단계로 끝납니다.</p>
+  <div class="steps">
+    <div class="step-item">
+      <div class="step-num">1</div>
+      <div class="step-title">출발 30분 전</div>
+      <p class="step-desc">레이스 시작 전 1개 섭취. 카페인이 혈중 농도에 도달하는 시간을 맞춰줍니다.</p>
+    </div>
+    <div class="step-item">
+      <div class="step-num">2</div>
+      <div class="step-title">30~45분마다</div>
+      <p class="step-desc">레이스 중 30~45분 간격으로 1개씩 추가 섭취. 에너지 고갈 전에 보충하는 게 핵심입니다.</p>
+    </div>
+    <div class="step-item">
+      <div class="step-num">3</div>
+      <div class="step-title">물과 함께</div>
+      <p class="step-desc">젤 섭취 후 반드시 물 100~150ml와 함께 섭취. 소화 흡수 속도를 높이고 위장 부담을 줄입니다.</p>
+    </div>
+    <div class="step-item">
+      <div class="step-num">4</div>
+      <div class="step-title">완주 후 회복</div>
+      <p class="step-desc">피니시 직후 1개 추가 섭취로 글리코겐 회복을 돕습니다. 다음 훈련까지 빠른 회복을 지원합니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- INGREDIENTS -->
+<section class="ingredients">
+  <span class="section-tag">Ingredients</span>
+  <h2 class="section-title">성분 구성</h2>
+  <p class="section-desc">숨기는 성분 없이, 필요한 것만 담았습니다.</p>
+  <div class="ing-grid">
+    <div class="ing-list">
+      <div class="ing-item">
+        <span class="ing-name">카페인</span>
+        <div class="ing-bar-wrap"><div class="ing-bar" style="width:80%"></div></div>
+        <span class="ing-amount">50mg</span>
+      </div>
+      <div class="ing-item">
+        <span class="ing-name">탄수화물</span>
+        <div class="ing-bar-wrap"><div class="ing-bar" style="width:100%"></div></div>
+        <span class="ing-amount">25g</span>
+      </div>
+      <div class="ing-item">
+        <span class="ing-name">나트륨</span>
+        <div class="ing-bar-wrap"><div class="ing-bar" style="width:50%"></div></div>
+        <span class="ing-amount">120mg</span>
+      </div>
+      <div class="ing-item">
+        <span class="ing-name">칼륨</span>
+        <div class="ing-bar-wrap"><div class="ing-bar" style="width:35%"></div></div>
+        <span class="ing-amount">40mg</span>
+      </div>
+      <div class="ing-item">
+        <span class="ing-name">열량</span>
+        <div class="ing-bar-wrap"><div class="ing-bar" style="width:60%"></div></div>
+        <span class="ing-amount">100kcal</span>
+      </div>
+    </div>
+    <div class="ing-note-box">
+      <div class="ing-note-title">⚡ 성분 설계 원칙</div>
+      <div class="ing-note-item"><div class="ing-dot"></div><span>카페인 50mg — 집중력·지구력 향상에 유효한 최소 용량이자 심박수 이상을 유발하지 않는 안전 상한선</span></div>
+      <div class="ing-note-item"><div class="ing-dot"></div><span>탄수화물 25g — 30~45분 운동 구간 에너지 공급에 최적화된 함량. 말토덱스트린·과당 혼합으로 흡수 속도 최적화</span></div>
+      <div class="ing-note-item"><div class="ing-dot"></div><span>전해질 (나트륨·칼륨) — 땀으로 손실되는 미네랄 보충. 근육 경련 예방에 직결</span></div>
+      <div class="ing-note-item"><div class="ing-dot"></div><span>인공색소·보존료 無 — 맛과 향은 천연 성분만 사용</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2 class="section-title" style="color:var(--black)">30KM 벽,<br>페이스젤로 돌파</h2>
+  <p class="section-desc" style="color:rgba(0,0,0,0.6);margin:0 auto 40px;">지금 첫 주문하고 가을 마라톤 시즌을 준비하세요.<br>5개입 묶음 18,900원 · 무료배송</p>
+  <a class="btn-dark" href="#" onclick="openModal(); return false;">지금 구매하기 →</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">PACEGEL</div>
+  <div class="footer-note">© 2026 PaceGel — 가상 브랜드 기반 퍼포먼스 마케팅 포트폴리오 프로젝트</div>
+</footer>
+
+<!-- MODAL (전환 이벤트) -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div class="modal-title">구매 신청</div>
+    <p class="modal-sub">정보를 남겨주시면 출시 알림과 함께 얼리버드 할인 쿠폰을 보내드립니다.</p>
+    <div class="modal-form">
+      <input class="modal-input" type="text" placeholder="이름" id="input-name">
+      <input class="modal-input" type="tel" placeholder="연락처 (010-0000-0000)" id="input-phone">
+      <input class="modal-input" type="email" placeholder="이메일" id="input-email">
+      <button class="modal-submit" onclick="handleSubmit()" id="submit-btn">구매하기 →</button>
+    </div>
+    <p class="modal-note">※ 포트폴리오 프로젝트용 가상 랜딩페이지입니다. 실제 결제는 이루어지지 않습니다.</p>
+  </div>
+</div>
+
+<script>
+function openModal() {
+  document.getElementById('modal').classList.add('open');
+  if (typeof gtag !== 'undefined') gtag('event', 'button_click', { event_category: 'conversion', event_label: 'purchase_cta' });
+  if (typeof fbq !== 'undefined') fbq('track', 'InitiateCheckout');
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+}
+function handleSubmit() {
+  const name = document.getElementById('input-name').value;
+  const phone = document.getElementById('input-phone').value;
+  const email = document.getElementById('input-email').value;
+  if (!name || !phone || !email) { alert('모든 항목을 입력해주세요.'); return; }
+  const btn = document.getElementById('submit-btn');
+  btn.textContent = '신청 완료! ✓';
+  btn.style.background = '#1D9E75';
+  btn.disabled = true;
+  if (typeof gtag !== 'undefined') gtag('event', 'generate_lead', { event_category: 'conversion', event_label: 'form_submit' });
+  if (typeof fbq !== 'undefined') fbq('track', 'Lead');
+  setTimeout(closeModal, 1800);
+}
+</script>
+</body>
+</html>
